@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "ArrayWithIndex";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+
+
+
+
+
+
+<p>
+    FirstName: <span data-bind="text: firstName"></span>
+</p>
+<p>
+    FirstName: <input type="text" data-bind="value: firstName" />
+</p>
+<p>
+    LastName: <span data-bind="text: lastName"></span>
+</p>
+<p>
+    LastName: <input type="text" data-bind="value: lastName" />
+</p>
+
+
+
+<p>
+    FullName: <span data-bind="text: fullName"></span>
+</p>
+
+
+<h2>Friends (<span data-bind="text: friends().length"></span>)</h2>
+
+
+
+<hr />
+<ul data-bind="foreach: friends">
+     <li>
+            <span data-bind="text: $index"></span>
+            <input type="text" data-bind="value: name" />
+           
+            <button data-bind="click: $parent.removeFriend">Remove1</button>
+        </li>
+</ul>
+
+
+
+
+
+<button data-bind="click: addFriend, enable: friends().length < 5">Add Friend</button>
+<button data-bind="click: save, enable: friends().length > 0">Save Friend</button>
+
+<script type="text/javascript">
+
+    function friend(name) {
+        this.name = ko.observable(name);
+        this.isOnTwitter = ko.observable(false);
+        this.twitterName = ko.observable();
+    }
+
+    function viewModel() {
+
+        var self = this;
+        self.firstName = ko.observable("Bert");
+        self.lastName= ko.observable("Chen");
+        self.friends = ko.observableArray([new friend("Steve"), new friend("Bill")]);
+        self.addFriend = function () {
+            this.friends.push(new friend("Another"));
+        };
+        self.removeFriend = function () {
+            self.friends.remove(this);
+        };
+        self.save = function () {
+
+            $.ajax({
+                url: "@Url.Action("Save")",
+                type: "post",
+                data: ko.toJSON(self),
+                contentType: "application/json",
+                success: function(result){
+                    alert(result.message);
+                }
+            });
+        };
+
+        self.fullName = ko.dependentObservable(function () {
+            return self.firstName() + " " + self.lastName();
+        }, self);
+
+    };
+
+    ko.applyBindings(new viewModel());
+
+</script>
+<hr />
+
+<article>
+    <p>
+        Use this area to provide additional information.
+    </p>
+
+    <p>
+        Use this area to provide additional information.
+    </p>
+
+    <p>
+        Use this area to provide additional information.
+    </p>
+</article>
+
+<aside>
+    <h3>Aside Title</h3>
+    <p>
+        Use this area to provide additional information.
+    </p>
+    <ul>
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("About", "About", "Home")</li>
+        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+    </ul>
+</aside>

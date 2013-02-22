@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "ClickCounter";
+}
+
+<h2>ClickCounter</h2>
+http://knockoutjs.com/examples/clickCounter.html
+
+
+
+<div>
+    you have click <span data-bind="text: clickNumber"></span>
+
+</div>
+<div>
+    <button data-bind="click: addNumber, disable: hasClickMoreThanThreeTime" >Add One</button>
+    <input type="button" data-bind="click: addNumber, visible: notHasClickMoreThanThreeTime" value="Add One"/>
+    <input type="button" value="Reset" data-bind="click: resetNumber, visible: hasClickMoreThanThreeTime" />
+</div>
+
+
+
+<script type="text/javascript">
+
+   
+    
+
+    function viewModel() {
+
+        var self = this;
+        
+        self.clickNumber = ko.observable(0);
+
+        self.addNumber = function () {
+            self.clickNumber(self.clickNumber() + 1);
+        }
+
+        self.resetNumber = function () {
+            self.clickNumber(0);
+        }
+
+        self.hasClickMoreThanThreeTime = ko.computed(function () {
+            return self.clickNumber() >= 3;
+        }, self);
+        self.notHasClickMoreThanThreeTime = ko.computed(function () {
+            return !(self.clickNumber() >= 3);
+        }, self);
+
+    };
+
+    ko.applyBindings(new viewModel());
+
+</script>

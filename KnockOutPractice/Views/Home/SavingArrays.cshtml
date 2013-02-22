@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "SavingArrays";
+}
+
+<h2>SavingArrays and example of ko.dependentObservable</h2>
+
+
+
+
+<h2>Friends (<span data-bind="text: friends().length"></span>)</h2>
+
+<h2>FriendsCount with logic (<span data-bind="text: getCountPlus1()"></span>)</h2>
+
+<hr />
+<ul data-bind="foreach: friends">
+     <li>
+            <span data-bind="text: $index"></span>
+            <input type="text" data-bind="value: name" />
+           
+            <button data-bind="click: $parent.removeFriend">Remove1</button>
+        </li>
+</ul>
+
+
+
+
+
+<button data-bind="click: addFriend, enable: friends().length < 5">Add Friend</button>
+<button data-bind="click: save, enable: friends().length > 0">Save Friend</button>
+
+<script type="text/javascript">
+
+   
+    function friend(name)
+    {
+        this.name = ko.observable(name);
+        this.isOnTwitter= ko.observable(false);
+        this.twitterName = ko.observable();
+    }
+
+    function viewModel() {
+
+        var self = this;
+        
+        self.friends = ko.observableArray([]);
+        self.addFriend = function () {
+            self.friends.push(new friend("Another"));
+        };
+        self.removeFriend = function () {
+            self.friends.remove(this);
+        };
+        self.save = function () {
+
+            $.ajax({
+                url: "@Url.Action("SaveFriends")",
+                type: "post",
+                data: ko.toJSON(self.friends),
+                contentType: "application/json",
+                success: function(result){
+                    alert(result.message);
+                }
+            });
+        };
+
+        self.getCountPlus1 = ko.dependentObservable(function () {
+            return self.friends().length + 1;
+        });
+    };
+
+    ko.applyBindings(new viewModel());
+
+</script>
+<hr />

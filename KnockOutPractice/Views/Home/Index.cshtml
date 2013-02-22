@@ -1,0 +1,170 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+
+
+
+
+<p>
+    FirstName: <span data-bind="text: firstName"></span>
+</p>
+<p>
+    FirstName: <input type="text" data-bind="value: firstName" />
+</p>
+<p>
+    LastName: <span data-bind="text: lastName"></span>
+</p>
+<p>
+    LastName: <input type="text" data-bind="value: lastName" />
+</p>
+
+
+
+<p>
+    FullName: <span data-bind="text: fullName"></span>
+</p>
+
+
+<h2>Friends (<span data-bind="text: friends().length"></span>)</h2>
+
+<ul data-bind="template: { name: 'friendTemplate', foreach: friends }"></ul>
+
+<script type="text/html" id="friendTemplate">
+
+       
+        <li>
+            <input type="text" data-bind="value: name" />
+            <button data-bind="click: remove">Remove</button>
+            @*<button data-bind="click: removeFriend()">Remove1</button>*@
+            <label><input type="checkbox" data-bind="checked: isOnTwitter" />Is on Twitter
+            <input type="text" data-bind="value: twitterName, visible: isOnTwitter" />
+                </label>
+        </li>
+       
+
+</script>
+
+<hr />
+<ul data-bind="foreach: friends">
+
+     <li>
+            <span data-bind="text: $index"></span>
+            <input type="text" data-bind="value: name" />
+           
+            <button data-bind="click: $parent.removeFriend">Remove1</button>
+            
+        </li>
+
+
+</ul>
+
+
+
+
+
+<button data-bind="click: addFriend, enable: friends().length < 5">Add Friend</button>
+<button data-bind="click: save, enable: friends().length > 0">Save Friend</button>
+
+<script type="text/javascript">
+
+    function friend(name) {
+        return {
+            name: ko.observable(name),
+            isOnTwitter: ko.observable(false),
+            twitterName: ko.observable(),
+            remove: function () {
+                viewModel.friends.remove(this);
+            }
+        }
+    }
+
+    var viewModel = {
+
+        that: this,
+        firstName: ko.observable("Bert"),
+        lastName: ko.observable("Chen"),
+        friends: ko.observableArray([new friend("Steve"), new friend("Bill")]),
+        addFriend: function () {
+            this.friends.push(new friend("Another"));
+        },
+        removeFriend: function () {
+
+            viewModel.friends.remove(this);
+        },
+        save: function () {
+
+            $.ajax({
+                url: "@Url.Action("Save")",
+                type: "post",
+                data: ko.toJSON(this),
+                contentType: "application/json",
+                success: function(result){
+                    alert(result.message);
+                }
+            });
+        }
+      
+    };
+
+    viewModel.fullName = ko.dependentObservable(function () {
+        return this.firstName() + " " + this.lastName();
+    }, viewModel);
+
+    viewModel.fullName1 = ko.dependentObservable(function () {
+        return this.firstName() + " " + this.lastName();
+    }, viewModel);
+
+
+    ko.applyBindings(viewModel);
+
+</script>
+<hr />
+
+
+
+
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                To learn more about ASP.NET MVC visit
+                <a href="http://asp.net/mvc" title="ASP.NET MVC Website">http://asp.net/mvc</a>.
+                The page features <mark>videos, tutorials, and samples</mark> to help you get the most from ASP.NET MVC.
+                If you have any questions about ASP.NET MVC visit
+                <a href="http://forums.asp.net/1146.aspx/1?MVC" title="ASP.NET MVC Forum">our forums</a>.
+            </p>
+        </div>
+    </section>
+}
+<h3>We suggest the following:</h3>
+<ol class="round">
+    <li class="one">
+        <h5>Getting Started</h5>
+        ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+        enables a clean separation of concerns and that gives you full control over markup
+        for enjoyable, agile development. ASP.NET MVC includes many features that enable
+        fast, TDD-friendly development for creating sophisticated applications that use
+        the latest web standards.
+        <a href="http://go.microsoft.com/fwlink/?LinkId=245151">Learn more…</a>
+    </li>
+
+    <li class="two">
+        <h5>Add NuGet packages and jump-start your coding</h5>
+        NuGet makes it easy to install and update free libraries and tools.
+        <a href="http://go.microsoft.com/fwlink/?LinkId=245153">Learn more…</a>
+    </li>
+
+    <li class="three">
+        <h5>Find Web Hosting</h5>
+        You can easily find a web hosting company that offers the right mix of features
+        and price for your applications.
+        <a href="http://go.microsoft.com/fwlink/?LinkId=245157">Learn more…</a>
+    </li>
+</ol>
