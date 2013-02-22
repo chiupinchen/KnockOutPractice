@@ -46,4 +46,3 @@ C:\gitHubTest\KnockOutPractice\KnockOutPractice\bin\DotNetOpenAuth.OpenId.xml
 C:\gitHubTest\KnockOutPractice\KnockOutPractice\bin\DotNetOpenAuth.OpenId.RelyingParty.xml
 C:\gitHubTest\KnockOutPractice\KnockOutPractice\obj\Debug\KnockOutPractice.dll
 C:\gitHubTest\KnockOutPractice\KnockOutPractice\obj\Debug\KnockOutPractice.pdb
-C:\gitHubTest\KnockOutPractice\KnockOutPractice\obj\Debug\KnockOutPractice.csprojResolveAssemblyReference.cache

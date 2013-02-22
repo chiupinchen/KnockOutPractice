@@ -54,6 +54,11 @@ namespace KnockOutPractice.Controllers
             return Json(new { message });
         }
 
+
+        public ActionResult KnockOutTutorial()
+        {
+            return View();
+        }
         
         public ActionResult Contact()
         {
