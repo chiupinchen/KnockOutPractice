@@ -71,5 +71,10 @@ namespace KnockOutPractice.Controllers
         {
             return View();
         }
+
+        public ActionResult NewMethod()
+        {
+            return View();
+        }
     }
 }
