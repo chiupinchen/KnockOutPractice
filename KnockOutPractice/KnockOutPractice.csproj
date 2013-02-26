@@ -286,6 +286,7 @@
     <Content Include="Views\Home\SavingArrays.cshtml" />
     <Content Include="Views\Home\ClickCounter.cshtml" />
     <Content Include="Views\Home\KnockOutTutorial.cshtml" />
+    <Content Include="Views\Home\NewMethod.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
